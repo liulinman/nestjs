@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { RegexService } from './regex.service';
 import { CreateRegexDto } from './dto/create-regex.dto';
 import { UpdateRegexDto } from './dto/update-regex.dto';
