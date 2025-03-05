@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { CreateRegexDto } from './dto/create-regex.dto';
 import { UpdateRegexDto } from './dto/update-regex.dto';
 import { initModels } from 'src/database/init-models';
-import { sequelize } from '../database/index';
+import { sequelizeModel } from 'src/config';
 
-const { user } = initModels(sequelize);
+const { user } = initModels(sequelizeModel);
 
 @Injectable()
 export class RegexService {
