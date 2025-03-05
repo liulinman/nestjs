@@ -3,29 +3,29 @@ import { DataTypes, Model, Optional } from 'sequelize';
 
 export interface userAttributes {
   id: number;
-  user_name?: string;
-  user_phone?: string;
-  user_password?: string;
-  user_profile?: string;
-  user_disabled?: string;
-  user_gmtCreate?: string;
-  user_gmtModified?: string;
+  userName?: string;
+  userPhone?: string;
+  userPassword?: string;
+  userProfile?: string;
+  userDisabled?: string;
+  userGmtCreate?: string;
+  userGmtModified?: string;
 }
 
 export type userPk = "id";
 export type userId = user[userPk];
-export type userOptionalAttributes = "id" | "user_name" | "user_phone" | "user_password" | "user_profile" | "user_disabled" | "user_gmtCreate" | "user_gmtModified";
+export type userOptionalAttributes = "id" | "userName" | "userPhone" | "userPassword" | "userProfile" | "userDisabled" | "userGmtCreate" | "userGmtModified";
 export type userCreationAttributes = Optional<userAttributes, userOptionalAttributes>;
 
 export class user extends Model<userAttributes, userCreationAttributes> implements userAttributes {
   id!: number;
-  user_name?: string;
-  user_phone?: string;
-  user_password?: string;
-  user_profile?: string;
-  user_disabled?: string;
-  user_gmtCreate?: string;
-  user_gmtModified?: string;
+  userName?: string;
+  userPhone?: string;
+  userPassword?: string;
+  userProfile?: string;
+  userDisabled?: string;
+  userGmtCreate?: string;
+  userGmtModified?: string;
 
 
   static initModel(sequelize: Sequelize.Sequelize): typeof user {
@@ -36,33 +36,40 @@ export class user extends Model<userAttributes, userCreationAttributes> implemen
       allowNull: false,
       primaryKey: true
     },
-    user_name: {
+    userName: {
       type: DataTypes.STRING(255),
-      allowNull: true
+      allowNull: true,
+      field: 'user_name'
     },
-    user_phone: {
+    userPhone: {
       type: DataTypes.STRING(255),
-      allowNull: true
+      allowNull: true,
+      field: 'user_phone'
     },
-    user_password: {
+    userPassword: {
       type: DataTypes.STRING(255),
-      allowNull: true
+      allowNull: true,
+      field: 'user_password'
     },
-    user_profile: {
+    userProfile: {
       type: DataTypes.STRING(255),
-      allowNull: true
+      allowNull: true,
+      field: 'user_profile'
     },
-    user_disabled: {
+    userDisabled: {
       type: DataTypes.STRING(255),
-      allowNull: true
+      allowNull: true,
+      field: 'user_disabled'
     },
-    user_gmtCreate: {
+    userGmtCreate: {
       type: DataTypes.STRING(255),
-      allowNull: true
+      allowNull: true,
+      field: 'user_gmtCreate'
     },
-    user_gmtModified: {
+    userGmtModified: {
       type: DataTypes.STRING(255),
-      allowNull: true
+      allowNull: true,
+      field: 'user_gmtModified'
     }
   }, {
     sequelize,
