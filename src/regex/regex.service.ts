@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { CreateRegexDto } from './dto/create-regex.dto';
 import { UpdateRegexDto } from './dto/update-regex.dto';
+import { initModels } from 'src/database/init-models';
+import { sequelize } from '../database/index';
+
+const { user } = initModels(sequelize);
 
 @Injectable()
 export class RegexService {
@@ -8,8 +12,8 @@ export class RegexService {
     return 'This action adds a new regex';
   }
 
-  findAll() {
-    return `This action returns all regex`;
+  async findAll() {
+    return await user.findAll();
   }
 
   findOne(id: number) {

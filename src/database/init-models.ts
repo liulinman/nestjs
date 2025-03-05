@@ -1,15 +1,15 @@
 import type { Sequelize } from 'sequelize';
-import { regex as _regex } from './regex';
-import type { regexAttributes, regexCreationAttributes } from './regex';
+import { user as _user } from './user';
+import type { userAttributes, userCreationAttributes } from './user';
 
-export { _regex as regex };
+export { _user as user };
 
-export type { regexAttributes, regexCreationAttributes };
+export type { userAttributes, userCreationAttributes };
 
 export function initModels(sequelize: Sequelize) {
-  const regex = _regex.initModel(sequelize);
+  const user = _user.initModel(sequelize);
 
   return {
-    regex: regex,
+    user: user,
   };
 }
