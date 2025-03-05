@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreateRegexDto } from './dto/create-regex.dto';
-import { UpdateRegexDto } from './dto/update-regex.dto';
 import { initModels } from 'src/database/init-models';
 import { sequelizeModel } from 'src/config';
 
@@ -8,7 +6,7 @@ const { user } = initModels(sequelizeModel);
 
 @Injectable()
 export class RegexService {
-  create(createRegexDto: CreateRegexDto) {
+  create(createRegexDto: any) {
     return 'This action adds a new regex';
   }
 
@@ -20,7 +18,7 @@ export class RegexService {
     return `This action returns a #${id} regex`;
   }
 
-  update(id: number, updateRegexDto: UpdateRegexDto) {
+  update(id: number, updateRegexDto: any) {
     return `This action updates a #${id} regex`;
   }
 

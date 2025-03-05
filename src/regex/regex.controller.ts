@@ -8,15 +8,13 @@ import {
   Delete,
 } from '@nestjs/common';
 import { RegexService } from './regex.service';
-import { CreateRegexDto } from './dto/create-regex.dto';
-import { UpdateRegexDto } from './dto/update-regex.dto';
 
 @Controller('regex')
 export class RegexController {
   constructor(private readonly regexService: RegexService) {}
 
   @Post()
-  create(@Body() createRegexDto: CreateRegexDto) {
+  create(@Body() createRegexDto: any) {
     return this.regexService.create(createRegexDto);
   }
 
@@ -31,7 +29,7 @@ export class RegexController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRegexDto: UpdateRegexDto) {
+  update(@Param('id') id: string, @Body() updateRegexDto: any) {
     return this.regexService.update(+id, updateRegexDto);
   }
 

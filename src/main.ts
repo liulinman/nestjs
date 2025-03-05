@@ -1,19 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-const { Sequelize } = require('sequelize');
+import { sequelizeModel } from './config';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   console.log(`服务启动成功`);
-  // 创建 Sequelize 实例，连接到 MySQL 数据库
-  const sequelize = new Sequelize('font', 'root', '1234', {
-    host: '47.108.140.63', // 数据库所在主机
-    dialect: 'mysql', // 数据库类型，MySQL
-    logging: true, // 禁止 SQL 日志输出，可根据需要开启
-  });
 
   // 测试连接是否成功
-  sequelize
+  sequelizeModel
     .authenticate()
     .then(() => {
       console.log('连接数据库成功!');
@@ -21,6 +16,15 @@ async function bootstrap() {
     .catch((error) => {
       console.error('连接数据库失败:', error);
     });
+
+  // 全局启用 ValidationPipe
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true, // 只允许 DTO 中定义的属性
+      forbidNonWhitelisted: true, // 禁止传入 DTO 中未定义的属性
+      stopAtFirstError: true, // 遇到第一个验证错误就停止
+    }),
+  );
 
   await app.listen(3000);
 }
