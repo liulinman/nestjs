@@ -2,10 +2,10 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { sequelizeModel } from './config';
 import { ValidationPipe } from '@nestjs/common';
+import { InterceptorInterceptor } from './interceptor/interceptor.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  console.log(`服务启动成功`);
 
   // 测试连接是否成功
   sequelizeModel
@@ -17,6 +17,14 @@ async function bootstrap() {
       console.error('连接数据库失败:', error);
     });
 
+  // 配置跨域
+  app.enableCors({
+    origin: '*', // 允许所有的来源
+  });
+
+  // 注册全局拦截器
+  app.useGlobalInterceptors(new InterceptorInterceptor());
+
   // 全局启用 ValidationPipe
   app.useGlobalPipes(
     new ValidationPipe({
@@ -27,5 +35,6 @@ async function bootstrap() {
   );
 
   await app.listen(3000);
+  console.log(`服务启动成功`);
 }
 bootstrap();
