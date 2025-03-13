@@ -22,4 +22,14 @@ const localConfig: DBConfig = {
 };
 
 // 本地运行是没有 process.env.NODE_ENV 的，借此来区分[开发环境]和[生产环境]
+// 也可以显示设置NODE_ENV的值，在package.json中
+/**
+ * {
+  "scripts": {
+    "start": "NODE_ENV=development node app.js",  // 设置为开发环境
+    "build": "NODE_ENV=production node app.js"    // 设置为生产环境
+  }
+}
+ * 
+ */
 export const config = process.env.NODE_ENV ? productConfig : localConfig;
