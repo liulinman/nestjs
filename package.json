@@ -18,7 +18,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "sequelize": " sequelize-auto -o './src/database' -d font -h 47.108.140.63 -u root -p 3306 -x 1234 -e mysql --lang ts --caseProp c"
+    "sequelize": " sequelize-auto -o './src/database' -d font -h 47.108.140.63 -u root -p 3307 -x 1234 -e mysql --lang ts --caseProp c"
   },
   "dependencies": {
     "@nestjs/common": "^10.4.15",

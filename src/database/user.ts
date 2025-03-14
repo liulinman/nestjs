@@ -4,28 +4,24 @@ import { DataTypes, Model, Optional } from 'sequelize';
 export interface userAttributes {
   id: number;
   userName?: string;
-  userPhone?: string;
   userPassword?: string;
-  userProfile?: string;
-  userDisabled?: string;
-  userGmtCreate?: string;
-  userGmtModified?: string;
+  userPhone?: string;
+  userAge?: string;
+  userSex?: string;
 }
 
 export type userPk = "id";
 export type userId = user[userPk];
-export type userOptionalAttributes = "id" | "userName" | "userPhone" | "userPassword" | "userProfile" | "userDisabled" | "userGmtCreate" | "userGmtModified";
+export type userOptionalAttributes = "id" | "userName" | "userPassword" | "userPhone" | "userAge" | "userSex";
 export type userCreationAttributes = Optional<userAttributes, userOptionalAttributes>;
 
 export class user extends Model<userAttributes, userCreationAttributes> implements userAttributes {
   id!: number;
   userName?: string;
-  userPhone?: string;
   userPassword?: string;
-  userProfile?: string;
-  userDisabled?: string;
-  userGmtCreate?: string;
-  userGmtModified?: string;
+  userPhone?: string;
+  userAge?: string;
+  userSex?: string;
 
 
   static initModel(sequelize: Sequelize.Sequelize): typeof user {
@@ -41,35 +37,25 @@ export class user extends Model<userAttributes, userCreationAttributes> implemen
       allowNull: true,
       field: 'user_name'
     },
-    userPhone: {
-      type: DataTypes.STRING(255),
-      allowNull: true,
-      field: 'user_phone'
-    },
     userPassword: {
       type: DataTypes.STRING(255),
       allowNull: true,
       field: 'user_password'
     },
-    userProfile: {
+    userPhone: {
       type: DataTypes.STRING(255),
       allowNull: true,
-      field: 'user_profile'
+      field: 'user_phone'
     },
-    userDisabled: {
+    userAge: {
       type: DataTypes.STRING(255),
       allowNull: true,
-      field: 'user_disabled'
+      field: 'user_age'
     },
-    userGmtCreate: {
+    userSex: {
       type: DataTypes.STRING(255),
       allowNull: true,
-      field: 'user_gmtCreate'
-    },
-    userGmtModified: {
-      type: DataTypes.STRING(255),
-      allowNull: true,
-      field: 'user_gmtModified'
+      field: 'user_sex'
     }
   }, {
     sequelize,
