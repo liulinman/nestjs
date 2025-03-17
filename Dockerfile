@@ -1,25 +1,22 @@
-# 构建阶段
-FROM node:16 AS builder
+# 使用 Node.js 官方镜像作为基础镜像
+FROM node:23.3.0 AS production
 
+# 设置工作目录
 WORKDIR /app
 
-COPY package*.json ./
-COPY pnpm-lock.yaml ./
+COPY package.json /app/
 
-RUN npm install -g pnpm
-RUN pnpm install
+# 安装应用的依赖
+RUN npm install --production
 
-COPY . .
-RUN pnpm build
+# 复制 dist 文件夹到容器中
+COPY dist ./dist
 
-# 生产阶段
-FROM node:16-slim
+# 设置环境变量（生产环境）
+ENV NODE_ENV=production
 
-WORKDIR /app
-
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
-COPY package*.json ./
-
+# 暴露应用的端口
 EXPOSE 3000
+
+# 启动 NestJS 应用
 CMD ["node", "dist/main"]
