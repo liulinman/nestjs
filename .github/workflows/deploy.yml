@@ -1,80 +1,65 @@
-name: Deploy to Server
+name: Deploy Docker to Server
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
-  deploy:
+  build_and_deploy:
     runs-on: ubuntu-latest
 
     steps:
+      # Checkout 代码
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-
-      - name: Install pnpm
-        run: |
-          npm install -g pnpm@8
-
+      # 设置 Docker 构建环境
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses:
+          docker/setup-buildx-action@v2
 
-      - name: List workspace contents
+          # 安装 Docker Compose
+      - name: Install Docker Compose
         run: |
-          ls -la
-          pwd
+          sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
 
-      - name: Build Docker images
+      # 构建 Docker 镜像
+      - name: Build Docker Image
         run: |
-          echo "Starting Docker build..."
-          docker compose build --no-cache
-          echo "Build completed. Listing images..."
-          docker images
-          echo "Checking compose config..."
-          docker compose config
-          echo "Checking built images..."
-          docker images | grep bancked-app
+          docker-compose -f docker-compose.yml build bancked-app
 
-      - name: Save Docker images
+      # 将镜像保存为文件
+      - name: Save Docker Image
         run: |
-          echo "Saving images to tar file..."
-          docker save bancked-app:latest mysql:8.0 > images.tar
-          ls -lh images.tar
+          docker tag bancked-app bancked-app:latest
+          docker save -o bancked-app.tar bancked-app:latest
 
-      - name: Deploy to Server
-        uses: appleboy/scp-action@master
+      # 设置 SSH 密钥，用于 SSH 连接到服务器
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
         with:
-          host: 47.108.140.63
-          username: root
-          key: ${{ secrets.SERVER }}
-          source: 'docker-compose.yml,init/,images.tar,Dockerfile,dist/,package*.json,pnpm-lock.yaml'
-          target: '/root/bancked-project'
-          strip_components: 0
+          ssh-private-key: ${{ secrets.SERVER }}
 
-      - name: Execute remote commands
-        uses: appleboy/ssh-action@master
-        with:
-          host: 47.108.140.63
-          username: root
-          key: ${{ secrets.SERVER }}
-          script: |
-            cd /root/bancked-project
-            echo "Loading Docker images..."
-            docker load < images.tar
-            echo "Stopping existing containers..."
-            docker compose down
-            echo "Starting new containers..."
-            docker compose up -d
-            echo "Cleaning up..."
-            rm images.tar
-            docker image prune -f
-            echo "Deployment completed. Checking container status..."
-            docker compose ps
-            docker compose logs --tail=50
+      # 将镜像文件传输到远程服务器
+      - name: Transfer Docker Image to Server
+        run: |
+          scp -o StrictHostKeyChecking=no bancked-app.tar root@47.108.140.63:/root
+          scp -o StrictHostKeyChecking=no docker-compose.yml root@47.108.140.63:/root
+          scp -o StrictHostKeyChecking=no nginx.conf root@47.108.140.63:/root/nginx.conf
+
+      # 连接到服务器并部署 Docker 镜像
+      - name: Deploy Docker Image to Server
+        run: |
+          ssh -T -o StrictHostKeyChecking=no root@47.108.140.63 << 'EOF'
+            # 停止并删除当前正在运行的容器
+            docker stop bancked-app || true
+            docker rm bancked-app || true
+
+            # 加载传输的 Docker 镜像
+            docker load -i /root/bancked-app.tar
+
+            # 使用 Docker Compose 启动服务
+            docker-compose -f docker-compose.yml up -d
+          EOF
