@@ -39,6 +39,8 @@ jobs:
           docker images
           echo "Checking compose config..."
           docker compose config
+          echo "Checking built images..."
+          docker images | grep bancked-app
 
       - name: Save Docker images
         run: |
