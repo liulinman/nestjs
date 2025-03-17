@@ -17,11 +17,15 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Build and save Docker images
+      - name: Build Docker images
         run: |
           docker compose build
-          docker compose push || true
-          docker save $(docker compose config | grep 'image:' | awk '{print $2}') > images.tar
+          docker compose config
+          docker images
+
+      - name: Save Docker images
+        run: |
+          docker save bancked-app:latest mysql:8.0 > images.tar
 
       - name: Deploy to Server
         uses: appleboy/scp-action@master
@@ -29,7 +33,7 @@ jobs:
           host: 47.108.140.63
           username: root
           key: ${{ secrets.SERVER }}
-          source: 'docker-compose.yml,init/,images.tar'
+          source: 'docker-compose.yml,init/,images.tar,Dockerfile'
           target: '/root/bancked-project'
           strip_components: 0
 
