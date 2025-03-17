@@ -47,7 +47,7 @@ jobs:
         run: |
           scp -o StrictHostKeyChecking=no bancked-app.tar root@47.108.140.63:/root
           scp -o StrictHostKeyChecking=no docker-compose.yml root@47.108.140.63:/root
-          scp -o StrictHostKeyChecking=no -r init/ root@47.108.140.63:/root/init
+          scp -o StrictHostKeyChecking=no -r init.sql root@47.108.140.63:/root
 
       # 连接到服务器并部署 Docker 镜像
       - name: Deploy Docker Image to Server
