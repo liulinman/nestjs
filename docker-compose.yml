@@ -8,7 +8,7 @@ services:
     image: bancked-app:latest
     restart: always
     ports:
-      - '3000:3000'
+      - '3001:3000'
     environment:
       - NODE_ENV=production
       - DB_HOST=mysql
@@ -29,7 +29,7 @@ services:
       - MYSQL_USER=admin
       - MYSQL_PASSWORD=1234
     ports:
-      - '3307:3306'
+      - '3308:3306'
     volumes:
       - mysql-data:/var/lib/mysql
       - ./init:/docker-entrypoint-initdb.d
