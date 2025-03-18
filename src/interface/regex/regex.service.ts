@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { initModels } from 'src/database/init-models';
 import { sequelizeModel } from 'src/config';
 
-const { user } = initModels(sequelizeModel);
+const { users } = initModels(sequelizeModel);
 
 @Injectable()
 export class RegexService {
@@ -11,7 +11,7 @@ export class RegexService {
   }
 
   async findAll() {
-    return await user.findAll();
+    return await users.findAll();
   }
 
   findOne(id: number) {
