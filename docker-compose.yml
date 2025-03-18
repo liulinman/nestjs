@@ -32,7 +32,7 @@ services:
       - '3308:3306'
     volumes:
       - mysql-data:/var/lib/mysql
-      - /root/init:/docker-entrypoint-initdb.d
+      - /root/init.sql:/docker-entrypoint-initdb.d
       - ./my.cnf:/etc/mysql/my.cnf # 挂载自定义的 my.cnf 配置文件
 
 volumes:
