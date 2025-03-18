@@ -33,12 +33,7 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
       - /root/init:/docker-entrypoint-initdb.d
-    healthcheck:
-      test:
-        ['CMD', 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p1234']
-      interval: 5s
-      timeout: 5s
-      retries: 5
+      - ./my.cnf:/etc/mysql/my.cnf # 挂载自定义的 my.cnf 配置文件
 
 volumes:
   mysql-data:
