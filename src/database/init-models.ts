@@ -1,4 +1,6 @@
 import type { Sequelize } from "sequelize";
+import { hook as _hook } from "./hook";
+import type { hookAttributes, hookCreationAttributes } from "./hook";
 import { menus as _menus } from "./menus";
 import type { menusAttributes, menusCreationAttributes } from "./menus";
 import { operation_logs as _operation_logs } from "./operation_logs";
@@ -15,6 +17,7 @@ import { users as _users } from "./users";
 import type { usersAttributes, usersCreationAttributes } from "./users";
 
 export {
+  _hook as hook,
   _menus as menus,
   _operation_logs as operation_logs,
   _permissions as permissions,
@@ -25,6 +28,8 @@ export {
 };
 
 export type {
+  hookAttributes,
+  hookCreationAttributes,
   menusAttributes,
   menusCreationAttributes,
   operation_logsAttributes,
@@ -42,6 +47,7 @@ export type {
 };
 
 export function initModels(sequelize: Sequelize) {
+  const hook = _hook.initModel(sequelize);
   const menus = _menus.initModel(sequelize);
   const operation_logs = _operation_logs.initModel(sequelize);
   const permissions = _permissions.initModel(sequelize);
@@ -66,6 +72,7 @@ export function initModels(sequelize: Sequelize) {
   users.hasMany(user_roles, { as: "userRoles", foreignKey: "userId"});
 
   return {
+    hook: hook,
     menus: menus,
     operation_logs: operation_logs,
     permissions: permissions,
