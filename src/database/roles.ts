@@ -13,7 +13,7 @@ export interface rolesAttributes {
   updatedAt?: Date;
 }
 
-export type rolesPk = "id"; 
+export type rolesPk = "id";
 export type rolesId = roles[rolesPk];
 export type rolesOptionalAttributes = "id" | "description" | "createdAt" | "updatedAt";
 export type rolesCreationAttributes = Optional<rolesAttributes, rolesOptionalAttributes>;

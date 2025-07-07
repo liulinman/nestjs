@@ -8,21 +8,20 @@ import {
   Delete,
 } from '@nestjs/common';
 import { AuthIdMapService } from './auth-id-map.service';
-import { CreateAuthIdMapDto } from './dto/create-auth-id-map.dto';
 import { UpdateAuthIdMapDto } from './dto/update-auth-id-map.dto';
 
 @Controller('auth-id-map')
 export class AuthIdMapController {
   constructor(private readonly authIdMapService: AuthIdMapService) {}
 
-  @Post()
-  create(@Body() createAuthIdMapDto: CreateAuthIdMapDto) {
+  @Post('/createCookie')
+  create(@Body() createAuthIdMapDto: any) {
     return this.authIdMapService.create(createAuthIdMapDto);
   }
 
-  @Get()
-  findAll() {
-    return this.authIdMapService.findAll();
+  @Post('/findModel')
+  findAll(@Body() data: any) {
+    return this.authIdMapService.findAll(data);
   }
 
   @Get(':id')

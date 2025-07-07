@@ -1,3 +1,11 @@
+/*
+ * @Author: yifeng 2108546503@qq.com
+ * @Date: 2025-05-30 11:15:30
+ * @LastEditors: yifeng 2108546503@qq.com
+ * @LastEditTime: 2025-07-07 17:46:14
+ * @FilePath: /nestjs/src/interface/user/user.service.ts
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
 import { initModels } from 'src/database/init-models';
@@ -13,7 +21,7 @@ export class UserService {
 
   async findAll() {
     // return await user.findAll();
-    return await sequelizeModel.query(`select * from user`);
+    return await sequelizeModel.query(`select id from user`);
   }
 
   findOne(id: number) {

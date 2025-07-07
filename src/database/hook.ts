@@ -12,22 +12,10 @@ export interface hookAttributes {
 
 export type hookPk = "id";
 export type hookId = hook[hookPk];
-export type hookOptionalAttributes =
-  | "id"
-  | "hookName"
-  | "hookParam"
-  | "hookReturnValue"
-  | "hookProfile"
-  | "hookDeprecated";
-export type hookCreationAttributes = Optional<
-  hookAttributes,
-  hookOptionalAttributes
->;
+export type hookOptionalAttributes = "id" | "hookName" | "hookParam" | "hookReturnValue" | "hookProfile" | "hookDeprecated";
+export type hookCreationAttributes = Optional<hookAttributes, hookOptionalAttributes>;
 
-export class hook
-  extends Model<hookAttributes, hookCreationAttributes>
-  implements hookAttributes
-{
+export class hook extends Model<hookAttributes, hookCreationAttributes> implements hookAttributes {
   id!: number;
   hookName?: string;
   hookParam?: string;
@@ -38,8 +26,8 @@ export class hook
 
   static initModel(sequelize: Sequelize.Sequelize): typeof hook {
     return hook.init({
-        id: {
-          autoIncrement: true,
+    id: {
+      autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true

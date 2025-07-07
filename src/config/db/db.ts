@@ -1,8 +1,16 @@
+/*
+ * @Author: yifeng 2108546503@qq.com
+ * @Date: 2025-05-30 11:15:30
+ * @LastEditors: yifeng 2108546503@qq.com
+ * @LastEditTime: 2025-07-07 17:42:28
+ * @FilePath: /nestjs/src/config/db/db.ts
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 import { DBConfig } from './config.type';
 
 // config/db.ts
 const productConfig: DBConfig = {
-  port: 3307, // 端口号
+  port: 3308, // 端口号
   host: '47.108.140.63',
   username: 'root', // 数据库用户名
   password: '1234',
@@ -12,7 +20,7 @@ const productConfig: DBConfig = {
 };
 
 const localConfig: DBConfig = {
-  port: 3307, // 端口号
+  port: 3308, // 端口号
   host: '47.108.140.63',
   username: 'root', // 数据库用户名
   password: '1234',

@@ -2,6 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { CreateAuthIdMapDto } from './dto/create-auth-id-map.dto';
 import { UpdateAuthIdMapDto } from './dto/update-auth-id-map.dto';
 import axios from 'axios';
+import { initModels } from 'src/database/init-models';
+import { sequelizeModel } from 'src/config';
+const { cookie } = initModels(sequelizeModel);
 
 @Injectable()
 export class AuthIdMapService {
@@ -62,26 +65,51 @@ export class AuthIdMapService {
   }
 
   async create(createAuthIdMapDto: CreateAuthIdMapDto) {
-    const res = await axios.post(
-      'https://work-test.shuliantong.cn/api/iac/resource/list/all',
-    );
+    const { cookieValue, type } = createAuthIdMapDto;
+    const res = await cookie.upsert({
+      type,
+      cookie: cookieValue,
+    });
+
     return res;
   }
 
-  async findAll() {
-    const res = await axios.post(
-      'https://work-test.shuliantong.cn/api/iac/resource/list/all',
-      {},
-      {
-        headers: {
-          Cookie:
-            '_ytdeviceid_=yd0b5cdape9irncdwkacb; _yttoken_=0bb668644a124460b2fecb1500d1b22d; 3AB9D23F7A4B3C9B=OGYJBLEGH4VGBMQK34YDJVBU5XEAKQIX2GFGLPM5CZ6KB4OM63YWXOS3YPBTWKPK3FJPLAH7VIVKP52N6ELE7ERDXM; _slt_jddeviceid_=OGYJBLEGH4VGBMQK34YDJVBU5XEAKQIX2GFGLPM5CZ6KB4OM63YWXOS3YPBTWKPK3FJPLAH7VIVKP52N6ELE7ERDXM; tfstk=gMvSHVAdhep43pXLA_m4hctdFr6CVmkZRkspjHezvTBRJDtGu88F4ekCdEtOz6JyvwOCkEQyzQ-eGktMle1nqw7dRe-pamkZQ3xlK9KI7AkNWPT2mUNdvwndMgS-0geXf-gNK93Zu__L0-WHyYA0VeKxcMSU2wLLeZnfYMPRpaCLkSIOk9Bdy7CAkMS1JzedymtAoMBdJeBKctQcvfF0fMG5r3iy71ubszlwMZwLpKsx-N-S27b96g15W3BHZIpbp__92ZwKy1ruOZI6H24P-KtveMYx386BDMT1eIgYFetJsej9yxaRVQK6bs9nWJsDMUfVVIiLMaKOlTQXKD2hyQ-pL69-Wk7JEUJfsp4SuwRw0LCXWqyX-6OJ6TpI5xIrIR71U2VQc12CcNojcWV3SMbZ3hOgb31Rmg1qcmaJt_Iccnojc55Cwij4QmibyBf..; yttoken=69b8c13d-9dc4-4491-887f-30e4eede5e36',
-        },
+  // todo:怎么做业务错误返回的http请求状态，不是系统而是自己业务定义的错误。不然都是200无法区分
+
+  async findAll(data: any) {
+    const { model } = data;
+    const res1 = await cookie.findOne({
+      where: {
+        type: 'authId',
       },
-    );
-    const datas = this.findType2Data(res.data.data, '库存调价单');
-    console.log('Response data:', datas);
-    return datas;
+      raw: true,
+    });
+    if (res1) {
+      const { cookie } = res1;
+      const res = await axios.post(
+        'https://work-test.shuliantong.cn/api/iac/resource/list/all',
+        {},
+        {
+          headers: {
+            Cookie: `${cookie}`,
+          },
+        },
+      );
+      if (res && res.data.code === 8001) {
+        return {
+          code: 8001,
+          message: '请重新上传cookie',
+        };
+      }
+
+      const datas = this.findType2Data(res.data.data, `${model}`);
+
+      return {
+        code: 200,
+        list: datas,
+        message: Object.values(datas).length ? '查找成功' : '查找为空',
+      };
+    }
   }
 
   findOne(id: number) {

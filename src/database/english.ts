@@ -11,12 +11,7 @@ export interface englishAttributes {
 
 export type englishPk = "id";
 export type englishId = english[englishPk];
-export type englishOptionalAttributes =
-  | "id"
-  | "englishWord"
-  | "englishIpa"
-  | "englishChinese"
-  | "englishDec";
+export type englishOptionalAttributes = "id" | "englishWord" | "englishIpa" | "englishChinese" | "englishDec";
 export type englishCreationAttributes = Optional<englishAttributes, englishOptionalAttributes>;
 
 export class english extends Model<englishAttributes, englishCreationAttributes> implements englishAttributes {
@@ -38,7 +33,7 @@ export class english extends Model<englishAttributes, englishCreationAttributes>
     englishWord: {
       type: DataTypes.STRING(255),
       allowNull: true,
-          field: 'english_word',
+      field: 'english_word'
     },
     englishIpa: {
       type: DataTypes.STRING(255),
