@@ -1,8 +1,10 @@
 import type { Sequelize } from "sequelize";
-import { hook as _hook } from "./hook";
-import type { hookAttributes, hookCreationAttributes } from "./hook";
+import { english as _english } from './english';
+import type { englishAttributes, englishCreationAttributes } from "./english";
+import { hook as _hook } from './hook';
+import type { hookAttributes, hookCreationAttributes } from './hook';
 import { menus as _menus } from "./menus";
-import type { menusAttributes, menusCreationAttributes } from "./menus";
+import type { menusAttributes, menusCreationAttributes } from './menus';
 import { operation_logs as _operation_logs } from "./operation_logs";
 import type { operation_logsAttributes, operation_logsCreationAttributes } from "./operation_logs";
 import { permissions as _permissions } from "./permissions";
@@ -17,6 +19,7 @@ import { users as _users } from "./users";
 import type { usersAttributes, usersCreationAttributes } from "./users";
 
 export {
+  _english as english,
   _hook as hook,
   _menus as menus,
   _operation_logs as operation_logs,
@@ -28,6 +31,8 @@ export {
 };
 
 export type {
+  englishAttributes,
+  englishCreationAttributes,
   hookAttributes,
   hookCreationAttributes,
   menusAttributes,
@@ -47,6 +52,7 @@ export type {
 };
 
 export function initModels(sequelize: Sequelize) {
+  const english = _english.initModel(sequelize);
   const hook = _hook.initModel(sequelize);
   const menus = _menus.initModel(sequelize);
   const operation_logs = _operation_logs.initModel(sequelize);
@@ -56,22 +62,52 @@ export function initModels(sequelize: Sequelize) {
   const user_roles = _user_roles.initModel(sequelize);
   const users = _users.initModel(sequelize);
 
-  permissions.belongsToMany(roles, { as: 'roleIdRoles', through: role_permissions, foreignKey: "permissionId", otherKey: "roleId" });
-  roles.belongsToMany(permissions, { as: 'permissionIdPermissions', through: role_permissions, foreignKey: "roleId", otherKey: "permissionId" });
-  roles.belongsToMany(users, { as: 'userIdUsers', through: user_roles, foreignKey: "roleId", otherKey: "userId" });
-  users.belongsToMany(roles, { as: 'roleIdRolesUserRoles', through: user_roles, foreignKey: "userId", otherKey: "roleId" });
-  role_permissions.belongsTo(permissions, { as: "permission", foreignKey: "permissionId"});
-  permissions.hasMany(role_permissions, { as: "rolePermissions", foreignKey: "permissionId"});
-  role_permissions.belongsTo(roles, { as: "role", foreignKey: "roleId"});
-  roles.hasMany(role_permissions, { as: "rolePermissions", foreignKey: "roleId"});
-  user_roles.belongsTo(roles, { as: "role", foreignKey: "roleId"});
-  roles.hasMany(user_roles, { as: "userRoles", foreignKey: "roleId"});
-  operation_logs.belongsTo(users, { as: "user", foreignKey: "userId"});
-  users.hasMany(operation_logs, { as: "operationLogs", foreignKey: "userId"});
-  user_roles.belongsTo(users, { as: "user", foreignKey: "userId"});
-  users.hasMany(user_roles, { as: "userRoles", foreignKey: "userId"});
+  permissions.belongsToMany(roles, {
+    as: 'roleIdRoles',
+    through: role_permissions,
+    foreignKey: 'permissionId',
+    otherKey: 'roleId',
+  });
+  roles.belongsToMany(permissions, {
+    as: 'permissionIdPermissions',
+    through: role_permissions,
+    foreignKey: 'roleId',
+    otherKey: 'permissionId',
+  });
+  roles.belongsToMany(users, {
+    as: 'userIdUsers',
+    through: user_roles,
+    foreignKey: 'roleId',
+    otherKey: 'userId',
+  });
+  users.belongsToMany(roles, {
+    as: 'roleIdRolesUserRoles',
+    through: user_roles,
+    foreignKey: 'userId',
+    otherKey: 'roleId',
+  });
+  role_permissions.belongsTo(permissions, {
+    as: 'permission',
+    foreignKey: 'permissionId',
+  });
+  permissions.hasMany(role_permissions, {
+    as: 'rolePermissions',
+    foreignKey: 'permissionId',
+  });
+  role_permissions.belongsTo(roles, { as: 'role', foreignKey: 'roleId' });
+  roles.hasMany(role_permissions, {
+    as: 'rolePermissions',
+    foreignKey: 'roleId',
+  });
+  user_roles.belongsTo(roles, { as: 'role', foreignKey: 'roleId' });
+  roles.hasMany(user_roles, { as: 'userRoles', foreignKey: 'roleId' });
+  operation_logs.belongsTo(users, { as: 'user', foreignKey: 'userId' });
+  users.hasMany(operation_logs, { as: 'operationLogs', foreignKey: 'userId' });
+  user_roles.belongsTo(users, { as: 'user', foreignKey: 'userId' });
+  users.hasMany(user_roles, { as: 'userRoles', foreignKey: 'userId' });
 
   return {
+    english: english,
     hook: hook,
     menus: menus,
     operation_logs: operation_logs,
