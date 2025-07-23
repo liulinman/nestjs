@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAuthIdMapDto } from './dto/create-auth-id-map.dto';
-import { UpdateAuthIdMapDto } from './dto/update-auth-id-map.dto';
 import axios from 'axios';
 import { initModels } from 'src/database/init-models';
 import { sequelizeModel } from 'src/config';
+import { FindModelDto } from './dto/find-auth-id-map.dto';
 const { cookie } = initModels(sequelizeModel);
 
 @Injectable()
@@ -64,6 +64,29 @@ export class AuthIdMapService {
     return result;
   }
 
+  findType2DataLabel(data) {
+    let result = [];
+
+    // 遍历数据
+    data.forEach((item) => {
+      // 只处理 type 为 2 的节点
+      if (item.extra && item.extra.type === 2) {
+        result.push({
+          label: item.title,
+          value: item.title,
+        });
+      }
+
+      // 如果有子节点，递归处理
+      if (item.children && item.children.length > 0) {
+        // 合并子结果到父结果
+        result = [...result, ...this.findType2DataLabel(item.children)];
+      }
+    });
+
+    return result;
+  }
+
   async create(createAuthIdMapDto: CreateAuthIdMapDto) {
     const { cookieValue, type } = createAuthIdMapDto;
     const res = await cookie.upsert({
@@ -112,12 +135,39 @@ export class AuthIdMapService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} authIdMap`;
+  async modelSearch() {
+    const res1 = await cookie.findOne({
+      where: {
+        type: 'authId',
+      },
+      raw: true,
+    });
+
+    if (res1) {
+      // 1 把所有type===2的节点提取出来
+      const { cookie } = res1;
+      const res = await axios.post(
+        'https://work-test.shuliantong.cn/api/iac/resource/list/all',
+        {},
+        {
+          headers: {
+            Cookie: `${cookie}`,
+          },
+        },
+      );
+      if (res && res.data.code === 8001) {
+        return {
+          code: 8001,
+          message: '请重新上传cookie',
+        };
+      }
+      const datas = this.findType2DataLabel(res.data.data);
+      return datas;
+    }
   }
 
-  update(id: number, updateAuthIdMapDto: UpdateAuthIdMapDto) {
-    return `This action updates a #${id} authIdMap`;
+  findOne(id: number) {
+    return `This action returns a #${id} authIdMap`;
   }
 
   remove(id: number) {

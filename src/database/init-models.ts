@@ -1,4 +1,6 @@
 import type { Sequelize } from "sequelize";
+import { chineseNameMapEnglishName as _chineseNameMapEnglishName } from "./chineseNameMapEnglishName";
+import type { chineseNameMapEnglishNameAttributes, chineseNameMapEnglishNameCreationAttributes } from "./chineseNameMapEnglishName";
 import { cookie as _cookie } from "./cookie";
 import type { cookieAttributes, cookieCreationAttributes } from "./cookie";
 import { english as _english } from "./english";
@@ -21,6 +23,7 @@ import { users as _users } from "./users";
 import type { usersAttributes, usersCreationAttributes } from "./users";
 
 export {
+  _chineseNameMapEnglishName as chineseNameMapEnglishName,
   _cookie as cookie,
   _english as english,
   _hook as hook,
@@ -34,6 +37,8 @@ export {
 };
 
 export type {
+  chineseNameMapEnglishNameAttributes,
+  chineseNameMapEnglishNameCreationAttributes,
   cookieAttributes,
   cookieCreationAttributes,
   englishAttributes,
@@ -57,6 +62,7 @@ export type {
 };
 
 export function initModels(sequelize: Sequelize) {
+  const chineseNameMapEnglishName = _chineseNameMapEnglishName.initModel(sequelize);
   const cookie = _cookie.initModel(sequelize);
   const english = _english.initModel(sequelize);
   const hook = _hook.initModel(sequelize);
@@ -84,6 +90,7 @@ export function initModels(sequelize: Sequelize) {
   users.hasMany(user_roles, { as: "userRoles", foreignKey: "userId"});
 
   return {
+    chineseNameMapEnglishName: chineseNameMapEnglishName,
     cookie: cookie,
     english: english,
     hook: hook,

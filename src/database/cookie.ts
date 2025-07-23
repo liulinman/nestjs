@@ -6,47 +6,41 @@ export interface cookieAttributes {
   type: string;
 }
 
-export type cookiePk = 'type';
+export type cookiePk = "type";
 export type cookieId = cookie[cookiePk];
-export type cookieOptionalAttributes = 'cookie';
-export type cookieCreationAttributes = Optional<
-  cookieAttributes,
-  cookieOptionalAttributes
->;
+export type cookieOptionalAttributes = "cookie";
+export type cookieCreationAttributes = Optional<cookieAttributes, cookieOptionalAttributes>;
 
-export class cookie
-  extends Model<cookieAttributes, cookieCreationAttributes>
-  implements cookieAttributes
-{
+export class cookie extends Model<cookieAttributes, cookieCreationAttributes> implements cookieAttributes {
   cookie?: string;
   type!: string;
 
+
   static initModel(sequelize: Sequelize.Sequelize): typeof cookie {
-    return cookie.init(
+    return cookie.init({
+    cookie: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    type: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      primaryKey: true
+    }
+  }, {
+    sequelize,
+    tableName: 'cookie',
+    timestamps: false,
+    indexes: [
       {
-        cookie: {
-          type: DataTypes.TEXT,
-          allowNull: true,
-        },
-        type: {
-          type: DataTypes.STRING(255),
-          allowNull: false,
-          primaryKey: true,
-        },
+        name: "PRIMARY",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "type" },
+        ]
       },
-      {
-        sequelize,
-        tableName: 'cookie',
-        timestamps: false,
-        indexes: [
-          {
-            name: 'PRIMARY',
-            unique: true,
-            using: 'BTREE',
-            fields: [{ name: 'type' }],
-          },
-        ],
-      },
-    );
+    ]
+  });
   }
 }
