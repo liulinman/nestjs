@@ -3,7 +3,6 @@ import { CreateAuthIdMapDto } from './dto/create-auth-id-map.dto';
 import axios from 'axios';
 import { initModels } from 'src/database/init-models';
 import { sequelizeModel } from 'src/config';
-import { FindModelDto } from './dto/find-auth-id-map.dto';
 const { cookie } = initModels(sequelizeModel);
 
 @Injectable()
