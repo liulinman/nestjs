@@ -12,11 +12,12 @@ export class InterceptorInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       map((data) => {
-        // 返回统一的响应格式
+        const request = context.switchToHttp().getRequest();
+        const customMessage = request.customMessage || 'success'; // 获取自定义消息，默认 'success'
         return {
           code: 200,
           data: data, // 处理的响应数据
-          message: 'success', // 自定义成功消息
+          message: customMessage, // 如果自定义了消息，则使用它
         };
       }),
     );

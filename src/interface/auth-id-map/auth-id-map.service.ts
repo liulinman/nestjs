@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateAuthIdMapDto } from './dto/create-auth-id-map.dto';
 import axios from 'axios';
 import { initModels } from 'src/database/init-models';
@@ -96,8 +96,6 @@ export class AuthIdMapService {
     return res;
   }
 
-  // todo:怎么做业务错误返回的http请求状态，不是系统而是自己业务定义的错误。不然都是200无法区分
-
   async findAll(data: any) {
     const { model } = data;
     const res1 = await cookie.findOne({
@@ -118,19 +116,15 @@ export class AuthIdMapService {
         },
       );
       if (res && res.data.code === 8001) {
-        return {
-          code: 8001,
-          message: '请重新上传cookie',
-        };
+        throw new HttpException(
+          { code: 4001, message: 'cookie已经无效，请上传新的 cookie' },
+          HttpStatus.BAD_REQUEST, // HTTP 状态码 400 表示请求错误
+        );
       }
 
-      const datas = this.findType2Data(res.data.data, `${model}`);
+      const data = this.findType2Data(res.data.data, `${model}`);
 
-      return {
-        code: 200,
-        list: datas,
-        message: Object.values(datas).length ? '查找成功' : '查找为空',
-      };
+      return data;
     }
   }
 
@@ -155,13 +149,13 @@ export class AuthIdMapService {
         },
       );
       if (res && res.data.code === 8001) {
-        return {
-          code: 8001,
-          message: '请重新上传cookie',
-        };
+        throw new HttpException(
+          { code: 4001, message: 'cookie已经无效，请上传新的 cookie' },
+          HttpStatus.BAD_REQUEST, // HTTP 状态码 400 表示请求错误
+        );
       }
-      const datas = this.findType2DataLabel(res.data.data);
-      return datas;
+      const data = this.findType2DataLabel(res.data.data);
+      return data;
     }
   }
 
