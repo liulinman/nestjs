@@ -3,90 +3,13 @@ import { CreateAuthIdMapDto } from './dto/create-auth-id-map.dto';
 import axios from 'axios';
 import { initModels } from 'src/database/init-models';
 import { sequelizeModel } from 'src/config';
+import { findType2Data, findType2DataLabel } from './auth-id-map.utils';
+import { FindModelDto } from './dto/find-auth-id-map.dto';
 const { cookie } = initModels(sequelizeModel);
 
 @Injectable()
 export class AuthIdMapService {
-  processItem(item, result) {
-    // 如果当前节点有子节点，递归处理
-    if (item.children && item.children.length > 0) {
-      item.children.forEach((child) => {
-        // 在每层递归时，我们检查child.extra.type
-        if (child.extra && child.extra.type > 2) {
-          if (result[child.title]) {
-            result[`${child.title}_下钻`] = child.key;
-          } else {
-            result[child.title] = child.key;
-          }
-
-          // 递归处理子节点，传递递增的type值
-          this.processItem(child, result);
-        }
-      });
-    }
-  }
-
-  findType2Data(data, targetTitle) {
-    let result = {};
-
-    // 遍历数据
-    data.forEach((item) => {
-      // 查找目标title且type为2
-      if (item.title === targetTitle && item.extra && item.extra.type === 2) {
-        // 保存当前模块的title和key
-        result[item.title] = item.key;
-
-        // 如果有children，递归处理子节点
-        if (item.children && item.children.length > 0) {
-          item.children.forEach((child) => {
-            if (child.extra) {
-              // 如果子节点title和父节点title一样，加上下钻后缀
-              if (result[child.title]) {
-                result[`${child.title}_下钻`] = child.key;
-              } else {
-                result[child.title] = child.key;
-              }
-              this.processItem(child, result);
-            }
-          });
-        }
-      }
-
-      // 如果有子节点，递归处理
-      if (item.children && item.children.length > 0) {
-        const subResult = this.findType2Data(item.children, targetTitle);
-        // 合并子结果到父结果
-        result = { ...result, ...subResult };
-      }
-    });
-
-    return result;
-  }
-
-  findType2DataLabel(data) {
-    let result = [];
-
-    // 遍历数据
-    data.forEach((item) => {
-      // 只处理 type 为 2 的节点
-      if (item.extra && item.extra.type === 2) {
-        result.push({
-          label: item.title,
-          value: item.title,
-        });
-      }
-
-      // 如果有子节点，递归处理
-      if (item.children && item.children.length > 0) {
-        // 合并子结果到父结果
-        result = [...result, ...this.findType2DataLabel(item.children)];
-      }
-    });
-
-    return result;
-  }
-
-  async create(createAuthIdMapDto: CreateAuthIdMapDto) {
+  async createCookie(createAuthIdMapDto: CreateAuthIdMapDto) {
     const { cookieValue, type } = createAuthIdMapDto;
     const res = await cookie.upsert({
       type,
@@ -96,7 +19,7 @@ export class AuthIdMapService {
     return res;
   }
 
-  async findAll(data: any) {
+  async findAllModel(data: FindModelDto) {
     const { model } = data;
     const res1 = await cookie.findOne({
       where: {
@@ -122,7 +45,7 @@ export class AuthIdMapService {
         );
       }
 
-      const data = this.findType2Data(res.data.data, `${model}`);
+      const data = findType2Data(res.data.data, `${model}`);
 
       return data;
     }
@@ -154,7 +77,7 @@ export class AuthIdMapService {
           HttpStatus.BAD_REQUEST, // HTTP 状态码 400 表示请求错误
         );
       }
-      const data = this.findType2DataLabel(res.data.data);
+      const data = findType2DataLabel(res.data.data);
       return data;
     }
   }
