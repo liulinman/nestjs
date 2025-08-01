@@ -1,7 +1,7 @@
 SET NAMES utf8mb4;
 
 -- 如果数据库不存在则创建，并指定字符集
-CREATE DATABASE IF NOT EXISTS font CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE IF NOT EXISTS font CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
 
 -- 使用数据库
 USE font;
