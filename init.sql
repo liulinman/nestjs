@@ -7,7 +7,7 @@ CREATE DATABASE IF NOT EXISTS font CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode
 USE font;
 
 -- ----------------------------
--- Table structure for cookie
+-- Table structure for cookie -test
 -- ----------------------------
 CREATE TABLE IF NOT EXISTS cookie (
   `cookie` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
