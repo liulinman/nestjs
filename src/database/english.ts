@@ -4,22 +4,32 @@ import { DataTypes, Model, Optional } from 'sequelize';
 export interface englishAttributes {
   id: number;
   englishWord?: string;
-  englishIpa?: string;
+  englishPhonetic?: string;
+  englishType?: string;
   englishChinese?: string;
-  englishDec?: string;
+  englishNote?: string;
+  englishLevel?: string;
+  englishReference?: string;
+  englishCreateTime?: Date;
+  englishUpdateTime?: Date;
 }
 
 export type englishPk = "id";
 export type englishId = english[englishPk];
-export type englishOptionalAttributes = "id" | "englishWord" | "englishIpa" | "englishChinese" | "englishDec";
+export type englishOptionalAttributes = "id" | "englishWord" | "englishPhonetic" | "englishType" | "englishChinese" | "englishNote" | "englishLevel" | "englishReference" | "englishCreateTime" | "englishUpdateTime";
 export type englishCreationAttributes = Optional<englishAttributes, englishOptionalAttributes>;
 
 export class english extends Model<englishAttributes, englishCreationAttributes> implements englishAttributes {
   id!: number;
   englishWord?: string;
-  englishIpa?: string;
+  englishPhonetic?: string;
+  englishType?: string;
   englishChinese?: string;
-  englishDec?: string;
+  englishNote?: string;
+  englishLevel?: string;
+  englishReference?: string;
+  englishCreateTime?: Date;
+  englishUpdateTime?: Date;
 
 
   static initModel(sequelize: Sequelize.Sequelize): typeof english {
@@ -33,22 +43,52 @@ export class english extends Model<englishAttributes, englishCreationAttributes>
     englishWord: {
       type: DataTypes.STRING(255),
       allowNull: true,
+      comment: "英语单词",
       field: 'english_word'
     },
-    englishIpa: {
+    englishPhonetic: {
       type: DataTypes.STRING(255),
       allowNull: true,
-      field: 'english_ipa'
+      comment: "音标",
+      field: 'english_phonetic'
+    },
+    englishType: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      comment: "中文",
+      field: 'english_type'
     },
     englishChinese: {
       type: DataTypes.STRING(255),
       allowNull: true,
+      comment: "类型",
       field: 'english_chinese'
     },
-    englishDec: {
+    englishNote: {
       type: DataTypes.STRING(255),
       allowNull: true,
-      field: 'english_dec'
+      comment: "笔记",
+      field: 'english_note'
+    },
+    englishLevel: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      field: 'english_level'
+    },
+    englishReference: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      field: 'english_reference'
+    },
+    englishCreateTime: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      field: 'english_createTime'
+    },
+    englishUpdateTime: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      field: 'english_updateTime'
     }
   }, {
     sequelize,
