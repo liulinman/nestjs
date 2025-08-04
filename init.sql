@@ -27,8 +27,6 @@ CREATE TABLE IF NOT EXISTS english  (
   english_note varchar(255) DEFAULT NULL COMMENT '笔记',
   english_level varchar(255) DEFAULT NULL,
   english_reference varchar(255) DEFAULT NULL,
-  english_createTime datetime DEFAULT NULL,
-  english_updateTime datetime DEFAULT NULL,
     -- 自动添加创建时间
   english_createTime DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   
