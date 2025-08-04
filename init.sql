@@ -29,5 +29,10 @@ CREATE TABLE IF NOT EXISTS english  (
   english_reference varchar(255) DEFAULT NULL,
   english_createTime datetime DEFAULT NULL,
   english_updateTime datetime DEFAULT NULL,
+    -- 自动添加创建时间
+  english_createTime DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  
+  -- 自动添加更新时间
+  english_updateTime DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (id)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
