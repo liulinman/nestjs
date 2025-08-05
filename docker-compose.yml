@@ -16,6 +16,7 @@ services:
       - DB_USERNAME=admin
       - DB_PASSWORD=1234
       - DB_DATABASE=font
+      - TZ=Asia/Shanghai # 确保设置时区
     depends_on:
       - mysql
 
