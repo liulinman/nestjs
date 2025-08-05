@@ -9,5 +9,5 @@ export type DBConfig = {
   dialect: Dialect;
   logging: boolean;
   timezone:string;
-  dialectOptions:any
+  dialectOptions?:any
 };
