@@ -2,7 +2,7 @@ import { DBConfig } from './config.type';
 
 // config/db.ts
 const productConfig: DBConfig = {
-  port: 3308, // 端口号
+  port: 3310, // 端口号
   host: '47.108.140.63',
   username: 'root', // 数据库用户名
   password: '1234',
@@ -12,7 +12,7 @@ const productConfig: DBConfig = {
 };
 
 const localConfig: DBConfig = {
-  port: 3308, // 端口号
+  port: 3310, // 端口号
   host: '47.108.140.63',
   username: 'root', // 数据库用户名
   password: '1234',

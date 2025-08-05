@@ -31,13 +31,12 @@ services:
       - MYSQL_PASSWORD=1234
       - TZ=Asia/Shanghai # 确保设置时区
     ports:
-      - '3308:3306'
+      - '3310:3306'
     volumes:
       - mysql-data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql # 挂载相对路径的 SQL 文件
       - ./my.cnf:/etc/mysql/my.cnf # 挂载自定义的 my.cnf 配置文件
-      - /etc/localtime:/etc/localtime:ro # 挂载宿主机的 localtime 来同步时区
-      - /etc/timezone:/etc/timezone:ro # 可选，挂载宿主机的 timezone
+      - /etc/localtime:/etc/localtime:ro
 
 volumes:
   mysql-data:
