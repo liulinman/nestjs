@@ -22,6 +22,14 @@ FROM node:20-alpine AS production
 
 WORKDIR /app
 
+
+# 安装时区数据
+RUN apk add --no-cache tzdata
+
+# 设置时区为你的本地时区
+RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo "Asia/Shanghai" > /etc/timezone
+
+
 # 只复制必要的文件
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
