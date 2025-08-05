@@ -40,3 +40,8 @@ services:
 
 volumes:
   mysql-data:
+
+
+networks:
+  app-network:
+    driver: bridge  # 使用默认的 bridge 网络驱动
