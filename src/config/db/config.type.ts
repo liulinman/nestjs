@@ -8,4 +8,5 @@ export type DBConfig = {
   database: string;
   dialect: Dialect;
   logging: boolean;
+  timezone:string
 };

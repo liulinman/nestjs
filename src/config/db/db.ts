@@ -1,3 +1,11 @@
+/*
+ * @Author: yifeng 2108546503@qq.com
+ * @Date: 2025-08-05 19:20:35
+ * @LastEditors: yifeng 2108546503@qq.com
+ * @LastEditTime: 2025-08-05 21:23:47
+ * @FilePath: \nestjs\src\config\db\db.ts
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 import { DBConfig } from './config.type';
 
 // config/db.ts
@@ -9,6 +17,7 @@ const productConfig: DBConfig = {
   database: 'font', // 使用的数据库
   dialect: 'mysql', // 数据库类型
   logging: true, // 打印 SQL 查询日志
+  timezone: 'Asia/Shanghai', 
 };
 
 const localConfig: DBConfig = {
@@ -19,6 +28,7 @@ const localConfig: DBConfig = {
   database: 'font', // 使用的数据库
   dialect: 'mysql', // 数据库类型
   logging: true, // 打印 SQL 查询日志
+  timezone: 'Asia/Shanghai', 
 };
 
 // 本地运行是没有 process.env.NODE_ENV 的，借此来区分[开发环境]和[生产环境]
