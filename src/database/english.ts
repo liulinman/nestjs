@@ -3,8 +3,9 @@ import { DataTypes, Model, Optional } from 'sequelize';
 
 export interface englishAttributes {
   id: number;
-  englishWord?: string;
+  englishWord: string;
   englishPhonetic?: string;
+  englishImg?: string;
   englishType?: string;
   englishChinese?: string;
   englishNote?: string;
@@ -16,13 +17,14 @@ export interface englishAttributes {
 
 export type englishPk = "id";
 export type englishId = english[englishPk];
-export type englishOptionalAttributes = "id" | "englishWord" | "englishPhonetic" | "englishType" | "englishChinese" | "englishNote" | "englishLevel" | "englishReference" | "englishCreateTime" | "englishUpdateTime";
+export type englishOptionalAttributes = "id" | "englishPhonetic" | "englishImg" | "englishType" | "englishChinese" | "englishNote" | "englishLevel" | "englishReference" | "englishCreateTime" | "englishUpdateTime";
 export type englishCreationAttributes = Optional<englishAttributes, englishOptionalAttributes>;
 
 export class english extends Model<englishAttributes, englishCreationAttributes> implements englishAttributes {
   id!: number;
-  englishWord?: string;
+  englishWord!: string;
   englishPhonetic?: string;
+  englishImg?: string;
   englishType?: string;
   englishChinese?: string;
   englishNote?: string;
@@ -42,8 +44,9 @@ export class english extends Model<englishAttributes, englishCreationAttributes>
     },
     englishWord: {
       type: DataTypes.STRING(255),
-      allowNull: true,
+      allowNull: false,
       comment: "英语单词",
+      unique: "english_word",
       field: 'english_word'
     },
     englishPhonetic: {
@@ -51,6 +54,12 @@ export class english extends Model<englishAttributes, englishCreationAttributes>
       allowNull: true,
       comment: "音标",
       field: 'english_phonetic'
+    },
+    englishImg: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      comment: "图片",
+      field: 'english_img'
     },
     englishType: {
       type: DataTypes.STRING(255),
@@ -83,11 +92,15 @@ export class english extends Model<englishAttributes, englishCreationAttributes>
     englishCreateTime: {
       type: DataTypes.DATE,
       allowNull: true,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP'),
+      comment: "创建时间",
       field: 'english_createTime'
     },
     englishUpdateTime: {
       type: DataTypes.DATE,
       allowNull: true,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP'),
+      comment: "更新时间",
       field: 'english_updateTime'
     }
   }, {
@@ -101,6 +114,14 @@ export class english extends Model<englishAttributes, englishCreationAttributes>
         using: "BTREE",
         fields: [
           { name: "id" },
+        ]
+      },
+      {
+        name: "english_word",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "english_word" },
         ]
       },
     ]
