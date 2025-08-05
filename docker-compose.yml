@@ -29,7 +29,7 @@ services:
       - MYSQL_DATABASE=font
       - MYSQL_USER=admin
       - MYSQL_PASSWORD=1234
-      - TZ=Asia/Shanghai # 确保设置时区
+      - TZ=Asia/Shanghai # 确保设置
     ports:
       - '3308:3306'
     volumes:
