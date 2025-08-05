@@ -36,7 +36,7 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql # 挂载相对路径的 SQL 文件
       - ./my.cnf:/etc/mysql/my.cnf # 挂载自定义的 my.cnf 配置文件
       - /etc/localtime:/etc/localtime:ro # 挂载宿主机的 localtime 来同步时区
-      - /etc/timezone:/etc/timezone:ro # 可选，挂载宿主机的 timezone 设置
+      - /etc/timezone:/etc/timezone:ro # 可选，挂载宿主机的 timezone
 
 volumes:
   mysql-data:
