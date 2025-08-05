@@ -28,14 +28,13 @@ services:
       - MYSQL_DATABASE=font
       - MYSQL_USER=admin
       - MYSQL_PASSWORD=1234
+      - TZ=Asia/Shanghai
     ports:
       - '3308:3306'
     volumes:
       - mysql-data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql # 挂载相对路径的 SQL 文件
       - ./my.cnf:/etc/mysql/my.cnf # 挂载自定义的 my.cnf 配置文件
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
 
 volumes:
   mysql-data:
