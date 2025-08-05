@@ -31,7 +31,7 @@ services:
       - MYSQL_PASSWORD=1234
       - TZ=Asia/Shanghai # 确保设置时区
     ports:
-      - '3310:3306'
+      - '3308:3306'
     volumes:
       - mysql-data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql # 挂载相对路径的 SQL 文件
