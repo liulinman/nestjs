@@ -35,6 +35,7 @@ services:
       - mysql-data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql # 挂载相对路径的 SQL 文件
       - ./my.cnf:/etc/mysql/my.cnf # 挂载自定义的 my.cnf 配置文件
+      - /etc/localtime:/etc/localtime:ro
 
 volumes:
   mysql-data:
