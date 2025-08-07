@@ -1,11 +1,3 @@
-/*
- * @Author: yifeng 2108546503@qq.com
- * @Date: 2025-08-05 19:20:35
- * @LastEditors: yifeng 2108546503@qq.com
- * @LastEditTime: 2025-08-06 00:05:53
- * @FilePath: \nestjs\src\config\db\db.ts
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
 import { DBConfig } from './config.type';
 
 // config/db.ts
@@ -17,7 +9,7 @@ const productConfig: DBConfig = {
   database: 'font', // 使用的数据库
   dialect: 'mysql', // 数据库类型
   logging: true, // 打印 SQL 查询日志
-  timezone: "+00:00",
+  timezone: '+00:00',
   // dialectOptions:{
   //   dateStrings:true,
   //   typeCast:true
@@ -32,7 +24,7 @@ const localConfig: DBConfig = {
   database: 'font', // 使用的数据库
   dialect: 'mysql', // 数据库类型
   logging: true, // 打印 SQL 查询日志
-  timezone: "+00:00",
+  timezone: '+00:00',
   // dialectOptions:{
   //   dateStrings:true,
   //   typeCast:true

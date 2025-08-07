@@ -1,7 +1,11 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 
 import { EnglishService } from './english.service';
-import { AddEnglishWord } from './dto/english.dto';
+import {
+  AddEnglishWord,
+  ExistEnglishWord,
+  UpdateEnglishWord,
+} from './dto/english.dto';
 
 @Controller('english')
 export class EnglishController {
@@ -20,11 +24,20 @@ export class EnglishController {
   }
 
   /**判断单词是否已经存在 */
+  @Post('/existEnglishWord')
+  existEnglishWord(@Body() data: ExistEnglishWord) {
+    return this.englishService.existEnglishWord(data);
+  }
 
   /**修改单词 */
+  @Post('/updateEnglishWord')
+  updateEnglishWord(@Body() data: UpdateEnglishWord) {
+    return this.englishService.updateEnglishWord(data);
+  }
+
+  /**删除单词 */
   @Post('/delEnglishWord')
   delEnglishWord(@Body() data: { id: number }) {
     return this.englishService.delEnglishWord(data);
   }
-  /**删除单词 */
 }
