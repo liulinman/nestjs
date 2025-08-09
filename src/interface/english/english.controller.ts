@@ -4,6 +4,7 @@ import { EnglishService } from './english.service';
 import {
   AddEnglishWord,
   ExistEnglishWord,
+  FilterWordList,
   UpdateEnglishWord,
 } from './dto/english.dto';
 
@@ -39,5 +40,10 @@ export class EnglishController {
   @Post('/delEnglishWord')
   delEnglishWord(@Body() data: { id: number }) {
     return this.englishService.delEnglishWord(data);
+  }
+
+  @Post('/filterWordList')
+  filterWordList(@Body() data: FilterWordList) {
+    return this.englishService.filterWordList(data);
   }
 }

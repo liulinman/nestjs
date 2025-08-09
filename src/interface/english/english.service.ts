@@ -4,6 +4,7 @@ import { initModels } from 'src/database/init-models';
 import {
   AddEnglishWord,
   ExistEnglishWord,
+  FilterWordList,
   UpdateEnglishWord,
 } from './dto/english.dto';
 import { Op } from 'sequelize';
@@ -20,7 +21,59 @@ export class EnglishService {
   }
 
   async findWordList() {
-    return await english.findAll();
+    return await english.findAll({
+      order: [['englishCreateTime', 'DESC']], // 按照 createdAt 字段倒序排序
+    });
+  }
+
+  async filterWordList(data: FilterWordList) {
+    const {
+      startTime,
+      endTime,
+      englishChinese,
+      englishWord,
+      englishType,
+      englishLevel,
+    } = data;
+
+    let whereConditions: any = {};
+
+    if (startTime && endTime) {
+      whereConditions = {
+        englishCreateTime: {
+          [Op.between]: [startTime, endTime], // Filter records where englishCreateTime is within the range
+        },
+      };
+    }
+
+    // Add fuzzy search for englishChinese if provided
+    if (englishChinese) {
+      whereConditions.englishChinese = {
+        [Op.like]: `%${englishChinese}%`, // Fuzzy search on englishChinese
+      };
+    }
+
+    // Add fuzzy search for englishWord if provided
+    if (englishWord) {
+      whereConditions.englishWord = {
+        [Op.like]: `%${englishWord}%`, // Fuzzy search on englishWord
+      };
+    }
+
+    // Add exact match for englishType if provided
+    if (englishType) {
+      whereConditions.englishType = englishType;
+    }
+
+    // Add exact match for englishLevel if provided
+    if (englishLevel) {
+      whereConditions.englishLevel = englishLevel;
+    }
+
+    return await english.findAll({
+      where: whereConditions,
+      order: [['englishCreateTime', 'DESC']],
+    });
   }
 
   async delEnglishWord(data: { id: number }) {
