@@ -6,6 +6,7 @@ import {
   ExistEnglishWord,
   UpdateEnglishWord,
 } from './dto/english.dto';
+import { Op } from 'sequelize';
 const { english } = initModels(sequelizeModel);
 @Injectable()
 export class EnglishService {
@@ -46,18 +47,34 @@ export class EnglishService {
   }
 
   async updateEnglishWord(data: UpdateEnglishWord) {
-    const { id } = data;
+    const { id, englishWord } = data;
     try {
+      // 1 先排查当前单词
+      const existingWord = await english.findOne({
+        where: {
+          englishWord, // 查找相同的单词
+          id: { [Op.ne]: id }, // 排除当前更新的 id
+        },
+        raw: true,
+      });
+
+      // Step 2: 如果找到了相同的单词，则抛出异常
+      if (existingWord) {
+        return {
+          code: 4001,
+          data: false,
+          message: '单词/短语已经存在',
+        };
+      }
       const res = await english.update(data, {
         where: {
           id,
         },
       });
-
       return res?.length ? true : false;
     } catch (error) {
       throw new HttpException(
-        { code: 4001, message: '单词/短语已经存在' },
+        { code: 4002, data: false, message: '发生错误' },
         HttpStatus.BAD_REQUEST, // HTTP 状态码 400 表示请求错误
       );
     }
