@@ -4,9 +4,10 @@ import { AppService } from './app.service';
 
 import { AuthIdMapModule } from './interface/auth-id-map/auth-id-map.module';
 import { EnglishModule } from './interface/english/english.module';
+import { OssModule } from './interface/oss/oss.module';
 
 @Module({
-  imports: [AuthIdMapModule, EnglishModule],
+  imports: [AuthIdMapModule, EnglishModule, OssModule],
   controllers: [AppController],
   providers: [AppService],
 })

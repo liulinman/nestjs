@@ -20,12 +20,6 @@ export class EnglishService {
     }
   }
 
-  async findWordList() {
-    return await english.findAll({
-      order: [['englishCreateTime', 'DESC']], // 按照 createdAt 字段倒序排序
-    });
-  }
-
   async filterWordList(data: FilterWordList) {
     const {
       startTime,
@@ -34,6 +28,8 @@ export class EnglishService {
       englishWord,
       englishType,
       englishLevel,
+      page,
+      pageSize,
     } = data;
 
     let whereConditions: any = {};
@@ -70,10 +66,25 @@ export class EnglishService {
       whereConditions.englishLevel = englishLevel;
     }
 
-    return await english.findAll({
+    // 计算偏移量，page从1开始，offset = (page - 1) * pageSize
+    const offset = (page - 1) * pageSize;
+
+    // 获取符合条件的记录总数
+    const total = await english.count({
+      where: whereConditions,
+    });
+    const list = await english.findAll({
       where: whereConditions,
       order: [['englishCreateTime', 'DESC']],
+      limit: pageSize, // 每页数据条数
+      offset: offset, // 偏移量
     });
+
+    return {
+      list,
+      total, // 返回总记录数
+      totalPages: Math.ceil(total / pageSize), // 计算总页数
+    };
   }
 
   async delEnglishWord(data: { id: number }) {

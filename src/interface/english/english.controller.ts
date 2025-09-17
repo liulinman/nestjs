@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 
 import { EnglishService } from './english.service';
 import {
@@ -11,12 +11,6 @@ import {
 @Controller('english')
 export class EnglishController {
   constructor(private readonly englishService: EnglishService) {}
-
-  /**查询单词 */
-  @Get('/findWordList')
-  findWordList() {
-    return this.englishService.findWordList();
-  }
 
   /**新增修改单词 */
   @Post('/addEnglishWord')
